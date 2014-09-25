@@ -5,7 +5,7 @@ How to run
 ---
 
 - Pull this repo, import into SDK, and run on an Android device
-- Alternatively, install this apk file and run
+- Alternatively, install this [apk](https://dl.dropboxusercontent.com/u/42083231/UROPDemo.apk) file and run
 - To record a video:
   - choose record video on main page
   - click on REC button in top right corner to start recording
