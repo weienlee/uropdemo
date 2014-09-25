@@ -20,4 +20,7 @@ Notes
 - Sensor data being recorded is the device's orientation in the three axes
 - Threshold value during playback is y>|20|
   - This corresponds to instances in which the device (held in landscape orientaion) is rotated more than 20 degrees from the horizontal
-- A lot of camera code is borrowed from [here](http://android-er.blogspot.com/2011/10/simple-exercise-of-video-capture-using.html).
+- A lot of camera code is borrowed from [here](http://android-er.blogspot.com/2011/10/simple-exercise-of-video-capture-using.html)
+- Video/sensor data is being saved in root sdcard directory
+  - Video has max size 50M or max duration 60s
+  - Sensor data stored as tsv in txt file
