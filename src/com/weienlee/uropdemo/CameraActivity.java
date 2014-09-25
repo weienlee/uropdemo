@@ -1,8 +1,10 @@
 package com.weienlee.uropdemo;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.NumberFormat;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -71,6 +73,11 @@ public class CameraActivity extends Activity implements SensorEventListener{
 
 		myButton = (Button)findViewById(R.id.mybutton);
 		myButton.setOnClickListener(myButtonOnClickListener);
+		
+		try {
+			writer = new FileWriter("/sdcard/uropdemo_tmp.txt",false);
+		} catch (IOException e) {
+		}
 	}
 
 	
@@ -90,6 +97,11 @@ public class CameraActivity extends Activity implements SensorEventListener{
 				mediaRecorder.stop();  // stop the recording
 				releaseMediaRecorder(); // release the MediaRecorder object
 
+				// copy tmp to uropdemo.txt
+				File tmp = new File("/sdcard/uropdemo_tmp.txt");
+				File data = new File("/sdcard/uropdemo.txt");
+				tmp.renameTo(data);
+				
 				myButton.setText("REC");
 				recording = false;
 			}else{
@@ -103,7 +115,6 @@ public class CameraActivity extends Activity implements SensorEventListener{
 							Toast.LENGTH_LONG).show();
 					finish();
 				}
-
 				mediaRecorder.start();
 				recording = true;
 				myButton.setText("STOP");
@@ -137,7 +148,7 @@ public class CameraActivity extends Activity implements SensorEventListener{
 
 		mediaRecorder.setOutputFile("/sdcard/uropdemo.mp4");
 		mediaRecorder.setMaxDuration(60000); // Set max duration 60 sec.
-		mediaRecorder.setMaxFileSize(50000000); // Set max file size 5M
+		mediaRecorder.setMaxFileSize(50000000); // Set max file size 50M
 
 		mediaRecorder.setPreviewDisplay(myCameraSurfaceView.getHolder().getSurface());
 
@@ -157,16 +168,28 @@ public class CameraActivity extends Activity implements SensorEventListener{
 	@Override
 	protected void onPause() {
 		super.onPause();
-		try {
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		if (writer != null) {
+			try {
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		// stop recording
 		if (mediaRecorder != null) {
 			mediaRecorder.stop();
 		}
+				
+		if (recording) {
+			recording = false;
+			// copy tmp to uropdemo.txt
+			File tmp = new File("/sdcard/uropdemo_tmp.txt");
+			File data = new File("/sdcard/uropdemo.txt");
+			tmp.renameTo(data);
+		}
+		
 		myButton.setText("REC");
 		recording = false;
 		
@@ -183,12 +206,10 @@ public class CameraActivity extends Activity implements SensorEventListener{
 		callbacks defined in this class, and gather the sensor information as quick
 		as possible*/
 		sManager.registerListener(this, sManager.getDefaultSensor(Sensor.TYPE_ORIENTATION),SensorManager.SENSOR_DELAY_UI);
-		
+
 		try {
-			writer = new FileWriter("/sdcard/uropdemo.txt",false);
+			writer = new FileWriter("/sdcard/uropdemo_tmp.txt",false);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		
 		// setup camera and surface view again
