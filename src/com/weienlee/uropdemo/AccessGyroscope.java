@@ -68,5 +68,6 @@ public class AccessGyroscope extends Activity implements SensorEventListener {
 				   "Orientation Y (Pitch) :"+ Float.toString(event.values[1]) +"\n"+
 				   "Orientation Z (Yaw) :"+ Float.toString(event.values[0]));
 
+		
 	}
 }
