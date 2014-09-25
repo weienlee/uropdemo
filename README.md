@@ -1,5 +1,6 @@
 urop demo
 ========
+Wei-En Lee | Michael Sun
 
 How to run
 ---
